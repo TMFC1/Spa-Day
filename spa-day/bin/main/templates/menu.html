@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+  <th:block th:replace="fragments :: headInclude"></th:block>
+  <body>
+    <div id="clientProfile">
+      <h1>My Super Fancy Spa</h1>
+      <h2>My profile</h2>
+      <p th:text="${client.skinType}"></p>
+      <p th:text="${client.nailService}"></p>
+      <div id="servicesMenu">
+        <h1>Menu of services</h1>
+        <h3>Facial Treatments</h3>
+        <p>
+          These facial treatments listed below are what our Estheticians
+          recommend for your given skin type.
+        </p>
+        <ul th:each="facialType : ${client.appropriateFacials}">
+          <li th:text="${facialType}"></li>
+        </ul>
+        <h1
+          th:text="${client.nailService.equals('manicure')} ? 'Manicure' : (${client.nailService.equals('pedicure')} ? 'Pedicure' : 'ManiPedi') "
+        ></h1>
+        <th:block th:switch="${client.nailService}">
+          <th:block th:case="manicure">
+            <p th:replace="fragments :: manicureDescription"></p>
+          </th:block>
+          <th:block th:case="pedicure">
+            <p th:replace="fragments :: pedicureDescription"></p>
+          </th:block>
+          <th:block th:case="manipedi">
+            <p th:replace="fragments :: manicureDescription"></p>
+            <p th:replace="fragments :: pedicureDescription"></p>
+          </th:block>
+        </th:block>
+      </div>
+    </div>
+    <footer>
+      <h3>Nail Colors</h3>
+      <div>
+        <th:block th:each="polishColor : ${client.polishColors}">
+          <div
+            id="special"
+            th:styleappend="|background-color:${polishColor.toLowerCase()};|"
+            th:text="${polishColor}"
+          ></div>
+        </th:block>
+      </div>
+      <a th:href="@{./}">Go Back</a>
+    </footer>
+  </body>
+</html>
